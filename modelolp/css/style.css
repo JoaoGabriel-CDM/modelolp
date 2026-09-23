@@ -1,0 +1,628 @@
+/* ==========================================================================
+   01. VARIÁVEIS CSS (:root)
+   ========================================================================== */
+:root {
+  /* Cores principais */
+  --red:        #CC0000;
+  --red-bright: #E80000;
+  --gold:       #FFD700;
+  --black:      #111111;
+  --dark:       #1c1c1c;
+  --dark2:      #2a2a2a;
+  --white:      #FFFFFF;
+  --offwhite:   #F5F5F5;
+  --gray:       #888888;
+  --green-wpp:  #25d366;
+
+  /* Raio de borda padrão */
+  --radius: 12px;
+
+  /* Tipografia */
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body:    'Inter', sans-serif;
+
+  /* Safe-area para dispositivos com notch */
+  box-sizing: border-box;
+  padding-top:    env(safe-area-inset-top,    0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* ==========================================================================
+   02. RESET & BASE
+   ========================================================================== */
+*, *::before, *::after {
+  box-sizing: inherit;
+  margin:  0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: env(safe-area-inset-top, 0px);
+}
+
+body {
+  font-family: var(--font-body);
+  background:  var(--black);
+  color:       var(--white);
+  overflow-x:  hidden;
+}
+
+/* ==========================================================================
+   03. TIPOGRAFIA — utilitários
+   ========================================================================== */
+.center { text-align: center; }
+.max-w  { max-width: 860px; margin-left: auto; margin-right: auto; }
+
+/* ==========================================================================
+   04. ANIMAÇÕES (@keyframes)
+   ========================================================================== */
+@keyframes pulse-btn {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(204,0,0,.6); transform: scale(1); }
+  50%       { box-shadow: 0 0 0 14px rgba(204,0,0,0); transform: scale(1.04); }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes crown-glow {
+  0%, 100% { filter: drop-shadow(0 0 6px  var(--gold)); }
+  50%       { filter: drop-shadow(0 0 18px var(--gold)); }
+}
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-6px); }
+}
+@keyframes wpp-bounce {
+  0%, 100% { transform: translateY(0) scale(1); }
+  30%       { transform: translateY(-8px) scale(1.08); }
+  60%       { transform: translateY(-3px) scale(1.03); }
+}
+
+/* Scroll-Reveal utility */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity .6s ease, transform .6s ease;
+  /* will-change melhora performance ao antecipar a camada de composição */
+  will-change: opacity, transform;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   05. COMPONENTES & BOTÕES
+   ========================================================================== */
+
+/* Botão CTA Header */
+.header-cta {
+  background:    var(--red);
+  color:         var(--white);
+  font-family:   var(--font-body);
+  font-weight:   700;
+  font-size:     .78rem;
+  padding:       .5rem .9rem;
+  border-radius: 6px;
+  text-decoration: none;
+  border:  none;
+  cursor:  pointer;
+  white-space: nowrap;
+  transition: background .2s;
+}
+.header-cta:hover { background: var(--red-bright); }
+
+/* Botão CTA Hero (legado — mantido para não quebrar referências externas) */
+.btn-hero {
+  display:         inline-block;
+  margin-top:      2.2rem;
+  background:      var(--red);
+  color:           var(--white);
+  font-weight:     900;
+  font-size:       1.05rem;
+  padding:         1rem 2.2rem;
+  border-radius:   50px;
+  text-decoration: none;
+  border:  none;
+  cursor:  pointer;
+  animation: fadeUp .8s .5s both, pulse-btn 2.2s 1.5s infinite;
+  transition: background .2s;
+}
+.btn-hero:hover { background: var(--red-bright); animation: none; transform: scale(1.05); }
+
+/* Botão CTA Principal — usado no Hero */
+.btn-primary {
+  display:         inline-flex;
+  align-items:     center;
+  justify-content: center;
+  gap:             8px;
+  margin-top:      2.2rem;
+  background:      var(--red);
+  color:           var(--white);
+  font-weight:     900;
+  font-size:       1.1rem;
+  padding:         1rem 2.2rem;
+  border-radius:   50px;
+  text-decoration: none;
+  border:  none;
+  cursor:  pointer;
+  transition:  background .2s, transform .2s;
+  box-shadow:  0 4px 15px rgba(204,0,0,.4);
+  will-change: transform;
+}
+.btn-primary:hover {
+  background: var(--red-bright);
+  transform:  translateY(-2px);
+}
+
+/* Pulsação do CTA */
+.pulse { animation: pulse-btn 2.2s infinite; }
+
+/* Botão WhatsApp rodapé */
+.btn-wpp-footer {
+  display:    inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap:        .6rem;
+  background:  var(--green-wpp);
+  color:       var(--white);
+  font-weight: 700;
+  font-size:   .95rem;
+  padding:     .85rem 1.8rem;
+  border-radius: 50px;
+  text-decoration: none;
+  min-height:  52px;
+  transition: background .2s, transform .2s;
+}
+.btn-wpp-footer:hover { background: #1db954; transform: scale(1.04); }
+
+.footer-buttons-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 2rem;
+}
+
+/* Botão Catálogo — dentro do #inside-store */
+.btn-catalog {
+  display:         inline-block;
+  background:      var(--green-wpp);
+  color:           var(--white);
+  padding:         0.6rem 1.2rem;
+  border-radius:   50px;
+  text-decoration: none;
+  font-weight:     bold;
+  font-size:       0.85rem;
+  transition:      background .2s;
+}
+.btn-catalog:hover { background: #1db954; }
+
+/* Botão Secundário ("Sair da Loja") */
+.btn-secondary {
+  background:    transparent;
+  color:         #ccc;
+  border:        1px solid #555;
+  padding:       0.5rem 1rem;
+  border-radius: 50px;
+  cursor:        pointer;
+  font-weight:   bold;
+  transition:    background .2s, color .2s;
+  margin-bottom: 2rem;
+}
+.btn-secondary:hover { background: #333; color: var(--white); }
+
+/* Botão Flutuante WhatsApp */
+.float-wpp {
+  position: fixed;
+  bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
+  right: 1.5rem;
+  z-index: 999;
+  width:  58px;
+  height: 58px;
+  background:    var(--green-wpp);
+  border-radius: 50%;
+  display:     flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:      0 4px 20px rgba(37,211,102,.4);
+  text-decoration: none;
+  animation:       wpp-bounce 3s ease-in-out infinite;
+  transition:      transform .2s;
+}
+.float-wpp:hover { transform: scale(1.1); animation: none; }
+.float-wpp svg   { width: 30px; height: 30px; fill: var(--white); }
+
+/* ==========================================================================
+   06. SEÇÕES DA PÁGINA
+   ========================================================================== */
+
+/* Espaçamento genérico de seção */
+section { padding: 4.5rem 1.25rem; }
+
+.section-label {
+  font-size:      .72rem;
+  font-weight:    700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color:          var(--red);
+  margin-bottom:  .6rem;
+  display:        block;
+}
+.section-title {
+  font-family:   var(--font-display);
+  font-size:     clamp(1.9rem, 5vw, 3rem);
+  line-height:   1.1;
+  color:         var(--white);
+  margin-bottom: 2.5rem;
+}
+
+/* ── Header ── */
+header {
+  position:   fixed;
+  top: 0; left: 0; right: 0;
+  z-index:    100;
+  background: rgba(17,17,17,.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 2px solid var(--red);
+  display:     flex;
+  align-items: center;
+  justify-content: space-between;
+  padding:     .75rem 1.25rem;
+}
+
+/* Logo — classes de proporção */
+.logo-link { text-decoration: none; }
+.logo-link:hover .king,
+.logo-link:hover .shop { opacity: .9; }
+
+/* Orphan rules .logo-text removidas (não usadas no HTML atual) */
+.logo-crown    { width: 24px; height: 24px; margin-bottom: -4px; }
+.logo-king     { font-family: var(--font-display); font-size: 1.6rem; font-weight: 900; color: var(--red); }
+.logo-shopping { font-family: var(--font-display); font-size: 0.7rem; letter-spacing: 4px; font-weight: 600; display: block; margin-top: -4px; color: var(--white); }
+
+/* ── Hero ── */
+#hero {
+  min-height: 100svh;
+  background: linear-gradient(160deg, #1a0000 0%, var(--black) 55%);
+  display:     flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align:  center;
+  padding:     6rem 1.5rem 3rem;
+  position:    relative;
+  overflow:    hidden;
+}
+#hero::before {
+  content: '';
+  position: absolute;
+  inset:    0;
+  background: radial-gradient(ellipse at 50% 30%, rgba(204,0,0,.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-eyebrow {
+  font-size:      .78rem;
+  font-weight:    700;
+  letter-spacing: 3px;
+  color:          var(--gold);
+  text-transform: uppercase;
+  margin-bottom:  1rem;
+  animation:      fadeIn .8s .1s both;
+}
+.hero-h1 {
+  font-family:    var(--font-display);
+  font-size:      clamp(2.4rem, 8vw, 5.5rem);
+  line-height:    1.05;
+  letter-spacing: 1px;
+  color:          var(--white);
+  max-width:      800px;
+  animation:      fadeUp .8s .2s both;
+}
+.hero-h1 em { color: var(--red); font-style: normal; }
+.hero-sub {
+  margin-top: 1.2rem;
+  font-size:  clamp(.95rem, 2.4vw, 1.2rem);
+  color:      #ccc;
+  max-width:  560px;
+  line-height: 1.6;
+  animation:  fadeUp .8s .35s both;
+}
+
+/* ── Marquee ── */
+.marquee-wrap {
+  background:  var(--red);
+  overflow:    hidden;
+  padding:     .55rem 0;
+  white-space: nowrap;
+}
+.marquee-track {
+  display:   inline-block;
+  animation: marquee 22s linear infinite;
+}
+.marquee-track span {
+  display:        inline-block;
+  font-size:      .82rem;
+  font-weight:    700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding:        0 2.5rem;
+  color:          var(--white);
+}
+.marquee-track span::after { content: '★'; margin-left: 2.5rem; color: var(--gold); }
+
+/* ── Benefits ── */
+#benefits { background: var(--dark); }
+.benefits-grid {
+  display:               grid;
+  grid-template-columns: 1fr;
+  gap:                   1.2rem;
+  max-width:             880px;
+  margin:                0 auto;
+}
+@media (min-width: 600px) { .benefits-grid { grid-template-columns: 1fr 1fr; } }
+.benefit-card {
+  background:    var(--dark2);
+  border:        1px solid #333;
+  border-radius: var(--radius);
+  padding:       1.6rem 1.4rem;
+  display:       flex;
+  gap:           1rem;
+  align-items:   flex-start;
+  transition:    border-color .25s, transform .25s;
+  cursor:        default;
+}
+.benefit-card:hover { border-color: var(--red); transform: translateY(-4px); }
+.benefit-icon {
+  flex-shrink:     0;
+  width:  48px;
+  height: 48px;
+  background:    rgba(204,0,0,.15);
+  border-radius: 10px;
+  display:     flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+.benefit-card h3 { font-size: 1rem;   font-weight: 700; margin-bottom: .4rem; color: var(--white); }
+.benefit-card p  { font-size: .88rem; color: #aaa; line-height: 1.55; }
+
+/* ── Objections ── */
+#objections { background: var(--black); }
+/* FAQ Accordion */
+.faq-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 760px;
+  margin: 0 auto;
+}
+.faq-item {
+  background: var(--dark2);
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid #333;
+}
+.faq-question {
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--white);
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.2s;
+}
+.faq-question:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+.faq-question h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0;
+}
+.faq-icon {
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: var(--gray);
+  transition: transform 0.3s ease;
+}
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+  background: rgba(0, 0, 0, 0.2);
+}
+.faq-answer p {
+  padding: 0 1.5rem 1.5rem;
+  color: #bbb;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+.faq-item.active .faq-icon {
+  transform: rotate(45deg);
+}
+
+/* ── Storefront / Fachada ── */
+#storefront {
+  background: linear-gradient(180deg, #0d0d0d 0%, #1a0a00 100%);
+  text-align: center;
+  overflow:   hidden;
+}
+#storefront .section-title { margin-bottom: 1rem; }
+.storefront-sub { color: #aaa; font-size: .95rem; margin-bottom: 2rem; }
+
+.svg-wrapper {
+  max-width:     900px;
+  margin:        0 auto;
+  border-radius: 16px;
+  overflow:      hidden;
+  box-shadow:    0 0 60px rgba(204,0,0,.25), 0 0 0 2px #333;
+}
+.svg-wrapper svg { display: block; width: 100%; height: auto; }
+
+/* Coroa animada dentro do SVG */
+.crown-anim { animation: crown-glow 2.5s ease-in-out infinite; }
+
+/* Portas de vidro — animação de abertura */
+.door-left, .door-right {
+  transition:  transform 0.8s ease-in-out;
+  will-change: transform;
+}
+.doors-open .door-left  { transform: translateX(-80px); }
+.doors-open .door-right { transform: translateX(80px);  }
+
+/* Wrapper clicável da fachada — gamification zoom */
+#storefront-svg-wrapper {
+  cursor:          pointer;
+  transition:      transform 1s cubic-bezier(.645,.045,.355,1), filter 1s ease, opacity 1s ease;
+  transform-origin: 50% 70%;  /* Perto da porta central */
+  will-change:     transform, filter, opacity;
+}
+body.enter-store #storefront-svg-wrapper {
+  transform:      scale(8);
+  filter:         blur(4px) brightness(.2);
+  opacity:        0;
+  pointer-events: none;
+}
+
+/* ── Inside Store / Catálogo ── */
+#inside-store {
+  display:    none;
+  opacity:    0;
+  padding:    4rem 1.25rem;
+  background: var(--dark);
+  /* Transição de opacidade controlada via JS */
+  transition: opacity .4s ease;
+}
+
+.catalog-grid {
+  display:               grid;
+  grid-template-columns: 1fr;
+  gap:                   1.5rem;
+  margin-top:            2rem;
+}
+@media (min-width: 600px) { .catalog-grid { grid-template-columns: 1fr 1fr; } }
+
+.catalog-card {
+  background:    var(--dark2);
+  border:        1px solid #333;
+  border-radius: var(--radius);
+  padding:       2rem 1.5rem;
+  text-align:    center;
+  transition:    transform .25s, border-color .25s;
+}
+.catalog-card:hover { transform: translateY(-5px); border-color: var(--gold); }
+.catalog-icon    { font-size: 3rem; margin-bottom: 1rem; }
+.catalog-card h3 { color: var(--gold); font-size: 1.2rem; margin-bottom: .5rem; }
+.catalog-card p  { color: #ccc; font-size: .9rem; margin-bottom: 1.5rem; line-height: 1.5; }
+
+/* ── Social Proof ── */
+#social { background: var(--dark); }
+.whatsapp-messages {
+  display:        flex;
+  flex-direction: column;
+  gap:            1rem;
+  max-width:      480px;
+  margin:         0 auto;
+}
+.wpp-bubble {
+  background:    #1f2c34;
+  border-radius: 12px 12px 12px 3px;
+  padding:       1rem 1.2rem;
+  position:      relative;
+  max-width:     88%;
+}
+.wpp-bubble.sent {
+  background:    #005c4b;
+  border-radius: 12px 12px 3px 12px;
+  align-self:    flex-end;
+}
+.wpp-name { font-size: .72rem; color: var(--green-wpp); font-weight: 700; margin-bottom: .3rem; }
+.wpp-text { font-size: .92rem; color: #e9edef; line-height: 1.45; }
+.wpp-time { font-size: .65rem; color: #8696a0; text-align: right; margin-top: .4rem; }
+.wpp-header {
+  background:    #1f2c34;
+  border-radius: 12px 12px 0 0;
+  padding:       .7rem 1rem;
+  display:       flex;
+  align-items:   center;
+  gap:           .7rem;
+  max-width:     480px;
+  margin:        0 auto 2px;
+}
+.wpp-avatar {
+  width:  38px;
+  height: 38px;
+  background:    var(--green-wpp);
+  border-radius: 50%;
+  display:     flex;
+  align-items: center;
+  justify-content: center;
+  font-size:   1.2rem;
+  flex-shrink: 0;
+}
+.wpp-header-name { font-size: .88rem; font-weight: 700; color: #e9edef; }
+.wpp-header-sub  { font-size: .7rem;  color: #8696a0; }
+
+/* ── Footer ── */
+footer {
+  background:  #0a0a0a;
+  border-top:  2px solid #222;
+  padding:     3rem 1.5rem 5rem;
+  text-align:  center;
+}
+/* Nota: .footer-logo não está no HTML atual (substituído pelo logo-link),
+   mantido aqui apenas como fallback seguro. */
+.footer-logo       { font-family: var(--font-display); font-size: 2.2rem; letter-spacing: 2px; margin-bottom: 1rem; }
+.footer-logo span  { color: var(--red); }
+.footer-address         { color: var(--gray); font-size: .88rem; line-height: 1.7; margin-bottom: 1.5rem; }
+.footer-address strong  { color: #ccc; }
+.footer-copy       { margin-top: 2rem; color: #444; font-size: .72rem; }
+.footer-links      { margin-top: 1rem; }
+.footer-links a    { color: var(--gray); text-decoration: underline; font-size: .8rem; margin: 0 10px; }
+.footer-links a:hover { color: var(--white); }
+
+/* ==========================================================================
+   07. ACESSIBILIDADE E RESPONSIVIDADE
+   ========================================================================== */
+
+/* Respeita preferência do sistema por movimentos reduzidos.
+   Cobre animações CSS pesadas (zoom, bounce, fade, marquee, pulse, doors). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration:   0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration:  0.01ms !important;
+    scroll-behavior:      auto !important;
+  }
+
+  /* Zoom de entrada da loja: instantâneo e sem opacidade 0 */
+  body.enter-store #storefront-svg-wrapper {
+    transform: none;
+    filter:    none;
+    opacity:   1;
+  }
+
+  /* Portas ficam estáticas */
+  .door-left,
+  .door-right { transition: none; }
+
+  /* Scroll-Reveal: mostra imediatamente, sem delay */
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
